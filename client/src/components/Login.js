@@ -89,8 +89,7 @@ handleSubmit(event){
                     <hr />
                   </form>
                 
-                  <div className="text-center"><a className="small" href="forgot-password.html">Forgot Password?</a></div>
-                  <div className="text-center"><a className="small" href="register.html">Create an Account!</a></div>
+                  <div className="text-center"><a className="small" href="/register">Create an Account!</a></div>
                 </div>
               </div>
             </div>
