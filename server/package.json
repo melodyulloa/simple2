@@ -19,10 +19,20 @@
     "mysql2": "^2.0.1",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
-    "sequelize": "^5.21.2"
+    "sequelize": "^5.21.2",
+    "apple-auth": "^1.0.4",
+    "bcryptjs": "latest",
+    "body-parser": "latest",
+    "core-js": "latest",
+    "cors": "latest",
+    "express": "latest",
+    "jsonwebtoken": "latest",
+    "logrocket": "^1.0.4",
+    "mysql2": "latest",
+    "sequelize": "latest"
   },
   "devDependencies": {
-    "nodemon": "^2.0.1",
-    "sequelize-cli": "^5.5.1"
+    "nodemon": "latest",
+    "sequelize-cli": "latest"
   }
 }
