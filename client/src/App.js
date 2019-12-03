@@ -9,17 +9,25 @@ import Profile from './components/Profile';
 
 // import logo from './logo.svg';
 import './App.css';
+import Inventory from './components/Inventory';
+import AllProducts from './components/AllProducts';
+
+
 class App extends Component{ 
+
+  
   render(){
     return (
       <Router>
         <div className="App">
-          <Navbar/>
+          <Navbar />
           <Route exact path="/" component={Welcome}/>
-          <div className="container">
+          <div className="">
               <Route exact path="/register" component={Register}/>
               <Route exact path="/login" component={Login}/>
               <Route exact path="/profile" component={Profile}/>
+              <Route exact path="/inventory" component={Inventory}/>
+              <Route exact path="/allproducts" component={AllProducts}/>
           </div>
         </div>
       </Router>

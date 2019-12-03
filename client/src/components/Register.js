@@ -22,7 +22,7 @@ class Register extends React.Component {
   }
 
   checkAuth(){
-      if(localStorage.userToken){
+      if(localStorage.jwtToken){
           this.props.history.push("/profile")
       }
   }
@@ -40,13 +40,13 @@ handleSubmit(event){
   let url = 'api/registration';
   axios({
     method: 'post',
-    url: 'http://localhost:3001/api/users',
+    url: '/api/users',
     data: body
   })
   .then(response=>{
        window.x = response;
        if(response.status == 200){ // success
-          localStorage.setItem('userToken', response.token);
+          localStorage.setItem('jwtToken', response.token);
           this.props.history.push('/profile');
        }
        
@@ -62,7 +62,7 @@ handleSubmit(event){
 
   render() {
     return(
-        <div className="card shadow-lg o-hidden border-0 my-5">
+        <div className="card shadow-lg o-hidden border-0 my-5" style={{width: 1200 + 'px',margin: 0 +' auto'  }}>
             <div className="card-body p-0">
                 <div className="row">
                     <div className="col-lg-5 d-none d-lg-flex">

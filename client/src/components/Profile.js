@@ -3,14 +3,15 @@ import React,{Component} from 'react';
 import {Link, withRouter} from 'react-router-dom';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
+import setAuthToken from "../utils/setAuthToken";
 
 class Profile extends Component{
     constructor (props){
         super(props);
         this.state={
-          firstName:'melo',
-          lastName: 'cara',
-          email:'fffggh'
+          firstName:'',
+          lastName: '',
+          email:''
         };
  
     this.handleChange = this.handleChange.bind(this);
@@ -30,31 +31,31 @@ class Profile extends Component{
      
     checkAuth(){
 
-        // axios({
-        //     method: 'get',
-        //     url: 'http://localhost:3001/api/profile'
-        //   })
-        //   .then(response=>{
-        //        window.x = response;
-        //     //    if(response.status == 200){ // success
-        //     //       localStorage.setItem('userToken', response.token);
-        //     //       this.props.history.push('/profile');
-        //     //    }
-               
-        //   })
-        //   .catch(error =>{
-        //        console.log(error);
-        //   })
-
-
-        if(!localStorage.userToken){
-            this.props.history.push("/login")
+        let token = localStorage.jwtToken;
+        
+        if(token){
+            axios({
+                method: 'get',
+                url: '/api/profile',
+                headers: {
+                    Authorization: token
+                }
+            })
+            .then(response=>{
+                this.setState({
+                    firstName: response.data.firstName,
+                    lastName: response.data.lastName,
+                    email: response.data.email
+                });
+            })
+            .catch(error =>{
+                localStorage.clear();
+                this.props.history.push("/login") 
+            })
+        }else{
+            this.props.history.push("/login") 
         }
-    }
-
-    componentDidMount(){
-        // let token = localStorage.userToken;
-        // console.log("token", token);
+    
     }
 
 
@@ -62,9 +63,29 @@ class Profile extends Component{
         return (
             <div id="wrapper">
 
+
+<nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
+            <div class="container-fluid d-flex flex-column p-0">
+                <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+                    <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-laugh-wink"></i></div>
+                    <div class="sidebar-brand-text mx-3"><span>simplePOS</span></div>
+                </a>
+                <hr class="sidebar-divider my-0"/>
+                <ul class="nav navbar-nav text-light" id="accordionSidebar">
+                    <li class="nav-item" role="presentation"></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="pos.html"><i class="fas fa-window-maximize"></i><span>Main Screen</span></a></li>
+                    <li class="nav-item" role="presentation"><Link className="nav-link" to="/inventory"><i class="fas fa-window-maximize"></i>Inventory</Link></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="dashboard.html"><i class="fas fa-window-maximize"></i><span>Sales Performance</span></a></li>
+                    <li class="nav-item" role="presentation"><Link className="nav-link active" to="/profile"><i class="fas fa-window-maximize"></i>Profile</Link></li>
+                </ul>
+                <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
+            </div>
+        </nav>
+
+
+
                 <div className="d-flex flex-column" id="content-wrapper">
                     <div id="content" >
-                        
                     <div className="container-fluid">
                         <h3 className="text-dark mb-4">Profile</h3>
                         <div className="row mb-3">

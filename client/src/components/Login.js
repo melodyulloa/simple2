@@ -1,6 +1,8 @@
 import React,{Component} from 'react';
 import {Link, withRouter} from 'react-router-dom';
 import axios from 'axios';
+import setAuthToken from "../utils/setAuthToken";
+import jwt_decode from "jwt-decode";
 
 class Login extends React.Component {
   constructor (props){
@@ -20,7 +22,8 @@ class Login extends React.Component {
     }
     
     checkAuth(){
-        if(localStorage.userToken){
+      
+        if(localStorage.jwtToken){
             this.props.history.push("/profile")
         }
     }
@@ -34,29 +37,37 @@ class Login extends React.Component {
     });
   }
   
-handleSubmit(event){
-  var body = this.state;
+    handleSubmit(event){
+          var body = this.state;
 
-  let url = 'api/registration';
-  axios({
-    method: 'post',
-    url: 'http://localhost:3001/api/login',
-    data: body
-  })
-  .then(response=>{
-       window.x = response;
-       if(response.status == 200){ // success
-          localStorage.setItem('userToken', response.token);
-          this.props.history.push('/profile');
-       }
-       
-  })
-  .catch(error =>{
-       console.log(error);
-  })
-  // alert('Form has been submitted');
-  event.preventDefault();
-}
+          let url = 'api/registration';
+          axios({
+            method: 'post',
+            url: '/api/login',
+            data: body
+          })
+          .then(response=>{
+            //Set token to local storage
+            const {token} = response.data;
+            localStorage.setItem("jwtToken", token);
+            //Set token to Auth header
+            setAuthToken(token);
+            //Decode token to get user data
+            const decoded = jwt_decode(token);
+            window.x = decoded;
+            //Set current user
+            localStorage.setItem("currentUser", decoded);
+            
+            // this.props.history.push('/profile');
+            window.location.reload();
+              
+          })
+          .catch(error =>{
+              console.log(error);
+          })
+          // alert('Form has been submitted');
+          event.preventDefault();
+    }
 
   
 
