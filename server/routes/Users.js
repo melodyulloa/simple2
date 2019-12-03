@@ -4,6 +4,7 @@ const usersRouter = express.Router();
 const jwt=require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
+
 const User=require ("../models/User");
 process.env.SECRET_KEY = "secret";
 //define router middleware
@@ -35,7 +36,7 @@ usersRouter.post('/users',(req,res)=>{
                 userData.password = hash;
                 User.create(userData)
                 .then(user => {
-                    let token = jwt.sign(user.dataValues, process.env.SECRET_KEY,{expiresIn : 1440});
+                    let token = jwt.sign(user.dataValues, process.env.SECRET_KEY,{expiresIn : '365d'});
                     res.status(200).json({token: token});
                 })
                 .catch(error => {
@@ -54,19 +55,35 @@ usersRouter.post('/users',(req,res)=>{
 
 // Login
 usersRouter.post('/login',(req,res)=>{
+    //check if email exists
     User.findOne({
         where: {
             email: req.body.email
         }
     })
     .then(user => {
-        if (bcrypt.compareSync(req.body.password, user.password)){
-            let token = jwt.sign(user.dataValues, process.env.SECRET_KEY,{
-                expiresIn: 1440
+
+        if (bcrypt.compareSync(req.body.password, user.password)){//user matched
+            //Create JWT payload
+            const payload = {
+                id: user.id,
+                name: user.name
+            };
+
+            //sign token
+            jwt.sign(payload, process.env.SECRET_KEY,{expiresIn: 1440},(err, token)=>{
+                res.json({
+                    success: true,
+                    token: "Bearer " + token
+                });
             })
-            res.status(200).json({ token: token});
+            
+            // let token = jwt.sign(user.dataValues, process.env.SECRET_KEY,{
+            //     expiresIn: 1440
+            // })
+            // res.status(200).json({ token: token});
         } else{
-            res.status(500).send('User does not exist');
+            res.status(500).send('User does not match');
         }
     })
     .catch(error => {
@@ -74,10 +91,13 @@ usersRouter.post('/login',(req,res)=>{
     });
 })
 
-//Profile
-usersRouter.get('/profile', (req,res)=>{
+// Protected Routes
 
-    var decoded = jwt.verify(req.headers['authorization'], process.env.SECRET_KEY)
+//Profile
+usersRouter.get('/profile', verifyToken, (req,res)=>{
+    
+    
+    var decoded = jwt.verify(req.token, process.env.SECRET_KEY)
 
     User.findOne({
         where:{
@@ -85,8 +105,19 @@ usersRouter.get('/profile', (req,res)=>{
         }
     })
     .then(user =>{
+
         if(user){
-            res.json(user)
+            
+            let userInfo = {
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+                company:user.company,
+                companyAddress: user.companyAddress,
+                companyCity: user.companyCity,
+                companyState: user.companyState,
+            }
+            res.json(userInfo)
         }else{
             res.send('User does not exist')
         }
@@ -95,6 +126,21 @@ usersRouter.get('/profile', (req,res)=>{
         res.send('error:' + err)
     })
 })
+
+
+// Custom middleware
+function verifyToken(req,res,next){
+
+    const bearerHeader = req.headers['authorization'];
+
+    if(typeof(bearerHeader) !=='undefined'){
+        const bearerToken = bearerHeader.split(' ')[1];
+        req.token = bearerToken
+        next()   
+    }else{
+        res.sendStatus(403) //forbidden
+    }
+}
 
 
 module.exports=usersRouter;

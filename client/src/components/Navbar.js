@@ -1,16 +1,58 @@
 
 import React,{Component} from 'react';
 import {Link, withRouter} from 'react-router-dom';
-
+import axios from 'axios';
 
 
 class Navbar extends Component{
+    
+    constructor (props){
+        super(props);
+        this.state={
+          firstName: ''
+        };
+ 
+   }
+
+   componentWillMount(){
+        this.checkAuth();
+    }
+    
+    checkAuth(){
+
+        let token = localStorage.jwtToken;
+        
+        if(token){
+            axios({
+                method: 'get',
+                url: '/api/profile',
+                headers: {
+                    Authorization: token
+                }
+            })
+            .then(response=>{
+                this.setState({
+                    firstName: response.data.firstName,
+                });
+            })
+            .catch(error =>{
+                console.log("error: ", error);
+                localStorage.clear();
+                // this.props.history.push("/welcome") 
+            })
+        }else{
+            // this.props.history.push("/welcome") 
+        }
+
+    }
+
 
 
     logout(e){
         e.preventDefault();
-        localStorage.removeItem("userToken");// "Give back" the keys 
-        this.props.history.push("/");// send their ass to homepage
+        localStorage.removeItem("jwtToken");// "Give back" the keys 
+        window.location.reload();
+        // this.props.history.push("/");
     }
 
 
@@ -58,9 +100,9 @@ class Navbar extends Component{
 
 
         return (
-            <div>
+            <div  style={{position:'fixed',width: 100 + '%', zIndex:'1000', top:0}}>
                 {
-                    localStorage.userToken ? userNav : welcomeNav
+                    this.state.firstName ? userNav : welcomeNav
                 }
             </div>
         
