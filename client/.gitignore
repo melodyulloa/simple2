@@ -25,3 +25,4 @@ yarn.lock
 package-lock.json*
 *.p8
 *.code-workspace
+.DS_Store
