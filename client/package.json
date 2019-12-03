@@ -58,5 +58,13 @@
     "eslint-plugin-react-hooks": "^1.7.0",
     "prettier": "^1.19.1",
     "pretty-quick": "^2.0.1"
-  }
+  },
+  “husky”: {
+    “hooks”: {
+        “pre-commit”: “lint-staged”
+    }
+},
+“lint-staged”: {
+    “src/**/*.{js,jsx}”: [“eslint”, “pretty-quick — staged”, “git add”]
+}
 }
