@@ -6,7 +6,23 @@ import Welcome from './components/Welcome';
 import Register from './components/Register';
 import Login from './components/Login';
 import Profile from './components/Profile';
-
+  // Users.defaultProps = {
+    //   id: '',
+    //   firstName: '',
+    //   lastName: '',
+    //   email: '',
+    //   company: '', 
+    //   companyAddress: '',
+    //   companyCity: '',
+    //   companyState: '',
+    //   password: ''
+    // }
+    //  <div className="Users">
+    //       <h1>Users</h1>
+    //       {this.state.users.map(users =>
+    //         <div key={users.id}> {users.firstName} {users.lastName} - {users.email} {users.company} {users.companyAddress} {users.companyCity} {users.companyState} {users.password}</div>
+    //       )}
+    //     </div>
 // import logo from './logo.svg';
 import './App.css';
 import Inventory from './components/Inventory';
@@ -17,6 +33,9 @@ class App extends Component{
 
   
   render(){
+class App extends Component { 
+  
+ render(){
     return (
       <Router>
         <div className="App">

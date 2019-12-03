@@ -3,6 +3,7 @@ import {Link, withRouter} from 'react-router-dom';
 import axios from 'axios';
 import setAuthToken from "../utils/setAuthToken";
 import jwt_decode from "jwt-decode";
+import AppleSignIn from './AppleSignIn';
 
 class Login extends React.Component {
   constructor (props){
@@ -15,10 +16,19 @@ class Login extends React.Component {
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit=this.handleSubmit.bind(this);
   }
+  handleClick() {
+    e.preventDefault();
+    AppleID.auth.init({
+                clientId : 'me.jdiego.simplePOS',
+                scope : 'name email',
+                redirectURI: 'https://example-app.com/redirect',
+                state : 'state'
+            }
+  }
 
 
-    componentWillMount(){
-        this.checkAuth();
+  componentDidMount(){
+      this.checkAuth();
     }
     
     checkAuth(){
@@ -101,6 +111,7 @@ class Login extends React.Component {
                   </form>
                 
                   <div className="text-center"><a className="small" href="/register">Create an Account!</a></div>
+                  <AppleSignIn />
                 </div>
               </div>
             </div>

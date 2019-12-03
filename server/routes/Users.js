@@ -10,8 +10,15 @@ process.env.SECRET_KEY = "secret";
 //define router middleware
 
 //define all routes here
-usersRouter.get('/users',(req,res)=>{
-    res.json({"message" : "All users"});
+// usersRouter.get('/users',(req,res)=>{
+//     res.json({"message"  : "All users"});
+// });
+
+usersRouter.get('/users', function(req, res, next) {
+ 	connection.query('SELECT * from users', function (error, results, fields) {
+		if (error) throw error;
+		res.send(JSON.stringify(results));
+	});
 });
 
 // Register
