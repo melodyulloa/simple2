@@ -34,7 +34,7 @@ class Inventory extends Component{
        this.handleEditSubmit=this.handleEditSubmit.bind(this);
    }
 
-   componentWillMount(){
+   UNSAFE_componentWillMount(){
        this.checkAuth()
    }
 

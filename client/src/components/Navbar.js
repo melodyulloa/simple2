@@ -14,7 +14,7 @@ class Navbar extends Component{
  
    }
 
-   componentWillMount(){
+   UNSAFE_componentWillMount(){
         this.checkAuth();
     }
     
