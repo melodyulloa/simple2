@@ -1,28 +1,15 @@
 {
   "name": "client",
-  "homepage": "https://jdiego.me",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@babel/helper-create-regexp-features-plugin": "latest",
-    "@babel/plugin-syntax-jsx": "latest",
-    "axios": "latest",
-    "babel-preset-jest": "latest",
-    "express": "^4.17.1",
-    "express-session": "^1.16.1",
-    "fsevents": "latest",
-    "husky": "^3.1.0",
-    "jsonwebtoken": "^8.5.1",
-    "jwt-decode": "latest",
-    "lint-staged": "^9.5.0",
-    "logrocket": "^1.0.4",
-    "passport": "^0.4.0",
-    "passport-oauth": "^1.0.0",
-    "react": "latest",
-    "react-dom": "latest",
-    "react-router-dom": "latest",
-    "react-scripts": "latest",
-    "typescript": "latest"
+    "axios": "^0.19.0",
+    "jwt-decode": "^2.2.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.2.0",
+    "sweetalert2": "^9.4.3"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -45,26 +32,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@babel/core": "7",
-    "babel-eslint": "^10.0.3",
-    "eslint": "^6.7.2",
-    "eslint-config-airbnb": "^18.0.1",
-    "eslint-config-prettier": "^6.7.0",
-    "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-jsx-a11y": "^6.2.3",
-    "eslint-plugin-react": "^7.17.0",
-    "eslint-plugin-react-hooks": "^1.7.0",
-    "prettier": "^1.19.1",
-    "pretty-quick": "^2.0.1"
-  },
-  “husky”: {
-    “hooks”: {
-        “pre-commit”: “lint-staged”
-    }
-},
-“lint-staged”: {
-    “src/**/*.{js,jsx}”: [“eslint”, “pretty-quick — staged”, “git add”]
-}
+  }
 }

@@ -25,7 +25,7 @@ class Profile extends Component{
         });
     }
 
-    UNSAFE_componentWillMount(){
+    componentWillMount(){
         this.checkAuth();
     }
      

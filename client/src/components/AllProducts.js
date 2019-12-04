@@ -14,7 +14,7 @@ class Inventory extends Component{
         };
    }
 
-    UNSAFE_componentWillMount(){
+    componentWillMount(){
         //get products from database
         let token = localStorage.jwtToken
         axios({

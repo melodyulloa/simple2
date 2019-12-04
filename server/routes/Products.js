@@ -59,7 +59,7 @@ productsRouter.post('/products',verifyToken,(req,res)=>{
                 Product.create(productData)
                 .then(product => {
                     
-                    res.status(200).json({productData: productData});
+                    res.status(200).json({productData: product});
                 })
                 .catch(error => {
                     res.status(500).json({"error":error});

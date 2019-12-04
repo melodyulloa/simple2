@@ -10,15 +10,8 @@ process.env.SECRET_KEY = "secret";
 //define router middleware
 
 //define all routes here
-// usersRouter.get('/users',(req,res)=>{
-//     res.json({"message"  : "All users"});
-// });
-
-usersRouter.get('/users', function(req, res, next) {
- 	connection.query('SELECT * from users', function (error, results, fields) {
-		if (error) throw error;
-		res.send(JSON.stringify(results));
-	});
+usersRouter.get('/users',(req,res)=>{
+    res.json({"message" : "All users"});
 });
 
 // Register
@@ -94,7 +87,7 @@ usersRouter.post('/login',(req,res)=>{
         }
     })
     .catch(error => {
-        res.status(500).json({error : error});
+        res.status(500).send("We can't find that username and password.");
     });
 })
 

@@ -5,6 +5,7 @@ import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import setAuthToken from "../utils/setAuthToken";
 import AllProducts from './AllProducts';
+const Swal = require('sweetalert2');
 
 class Inventory extends Component{
     constructor (props){
@@ -34,7 +35,7 @@ class Inventory extends Component{
        this.handleEditSubmit=this.handleEditSubmit.bind(this);
    }
 
-   UNSAFE_componentWillMount(){
+   componentWillMount(){
        this.checkAuth()
    }
 
@@ -109,6 +110,7 @@ class Inventory extends Component{
         });
     }
 
+    // Create new product
     handleSubmit(event){
         var body = this.state;
 
@@ -127,10 +129,10 @@ class Inventory extends Component{
             this.state.products.push(response.data.productData);
             this.setState({
                 products: this.state.products
-            })
-            
-            this.resetForm();
-            this.displayProducts();
+            },()=>{
+                this.resetForm();
+                this.displayProducts()
+            });
         })
         .catch(error =>{
             console.log(error);
@@ -165,6 +167,26 @@ class Inventory extends Component{
             this.setState({
                 products: response.data.ourProductArr
             },()=>{
+                document.getElementById("modalBtn").click();
+
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    onOpen: (toast) => {
+                      toast.addEventListener('mouseenter', Swal.stopTimer)
+                      toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                  })
+                  
+                  Toast.fire({
+                    icon: 'success',
+                    title: 'Changes saved successfully.'
+                  })
+
+
                 this.displayProducts()
             });
         })
@@ -187,6 +209,7 @@ class Inventory extends Component{
       }
 
       editProduct(x){
+        window.product = x;
         this.setState({
             editProduct:x.product,
             editQuantity:x.quantity,
@@ -245,6 +268,22 @@ class Inventory extends Component{
             this.setState({
                 products: response.data.ourProductArr
             },()=>{
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    onOpen: (toast) => {
+                      toast.addEventListener('mouseenter', Swal.stopTimer)
+                      toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                  })
+                  
+                  Toast.fire({
+                    icon: 'success',
+                    title: 'Deleted successfully'
+                  })
                 this.displayProducts()
             });
         })
@@ -271,7 +310,7 @@ class Inventory extends Component{
                                 <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="exampleModalCenterTitle">Edit Product</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <button type="button" id="modalBtn" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
